@@ -1,0 +1,5 @@
+/.vscode/
+/env/
+activate.bat
+**/__pycache__/
+.noseids

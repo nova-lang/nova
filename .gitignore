@@ -2,4 +2,4 @@
 /env/
 activate.bat
 **/__pycache__/
-.noseids
+**/.noseids

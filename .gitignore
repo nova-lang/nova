@@ -3,3 +3,5 @@
 activate.bat
 **/__pycache__/
 **/.noseids
+interpreter/nova/parser.out
+interpreter/nova/parsetab.py

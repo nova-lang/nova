@@ -1,0 +1,5 @@
+OperationsAdd = '@add'
+OperationsSub = '@sub'
+OperationsMult = '@mult'
+OperationsDiv = '@div'
+OperationsMod = '@mod'

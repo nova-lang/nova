@@ -46,11 +46,15 @@ class NovaParser:
 
     def p_expression_binop(self, t):
         '''expression : expression PLUS expression'''
-        t[0] = ast.ExpressionCall(interpreter.OperationsAdd, [t[1], t[3]])
+        t[0] = ast.ExpressionCall(ast.ExpressionVariable([interpreter.OperationsAdd]), [t[1], t[3]])
 
     def p_expression_identifier(self, t):
         'expression : IDENTIFIER'
         t[0] = ast.ExpressionVariable([t[1]])
+
+    def p_expression_integer(self, t):
+        'expression : INTEGER'
+        t[0] = ast.ExpressionNumber(t[1])
 
     def p_empty(self, p):
         'empty :'

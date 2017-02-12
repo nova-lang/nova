@@ -18,7 +18,7 @@ let d = e'''
             ast.StatementLet(
                 'a',
                 ast.ExpressionCall(
-                    interpreter.OperationsAdd, [
+                    ast.ExpressionVariable([interpreter.OperationsAdd]), [
                         ast.ExpressionVariable(['b']),
                         ast.ExpressionVariable(['c'])])),
             ast.StatementLet(

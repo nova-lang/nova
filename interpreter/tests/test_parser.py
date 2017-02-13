@@ -1,7 +1,6 @@
 import unittest
+from . import lexer, parser
 from nova import ast, interpreter
-from nova.lexer import NovaLexer
-from nova.parser import NovaParser
 
 
 class TestNovaParser(unittest.TestCase):
@@ -28,7 +27,5 @@ let d = e'''
         self._assert_parsing_equals(source, expected)
 
     def _assert_parsing_equals(self, source, expected):
-        lexer = NovaLexer()
-        parser = NovaParser(lexer)
         result = parser.parse(lexer.parse(source))
         self.assertEqual(expected, result)

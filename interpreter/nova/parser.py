@@ -17,7 +17,11 @@ class LexerWrapper:
 
 class NovaParser:
     precedence = (
-        ('left', 'PLUS'),
+        ('nonassoc', 'AND', 'OR'),
+        ('nonassoc', 'EQUAL', 'NEQ', 'LES', 'GRT', 'LTE', 'GTE'),
+
+        ('left', 'PLUS', 'MINUS'),
+        ('left', 'TIMES', 'FDIV', 'DIV', 'MOD'),
     )
 
     def __init__(self, lexer):
@@ -44,9 +48,46 @@ class NovaParser:
         'statement_let : LET IDENTIFIER EQUAL expression'
         t[0] = ast.StatementLet(t[2], t[4])
 
-    def p_expression_binop(self, t):
-        '''expression : expression PLUS expression'''
-        t[0] = ast.ExpressionCall(ast.ExpressionVariable([interpreter.OperationsAdd]), [t[1], t[3]])
+    def p_expression_binary_operation(self, t):
+        '''expression : expression AND expression
+                      | expression OR expression
+                      | expression EQUAL expression
+                      | expression NEQ expression
+                      | expression LES expression
+                      | expression GRT expression
+                      | expression LTE expression
+                      | expression GTE expression
+                      | expression PLUS expression
+                      | expression MINUS expression
+                      | expression TIMES expression
+                      | expression FDIV expression
+                      | expression DIV expression
+                      | expression MOD expression'''
+
+        operators = {
+            '+': interpreter.OperationsAdd,
+            '-': interpreter.OperationsSub,
+            '*': interpreter.OperationsMult,
+            '/': interpreter.OperationsFDiv,
+            'div': interpreter.OperationsIDiv,
+            'mod': interpreter.OperationsMod,
+        }
+
+        t[0] = ast.ExpressionCall(ast.ExpressionVariable([operators[t[2]]]), [t[1], t[3]])
+
+    def p_expression_unary_operation(self, t):
+        '''expression : NOT expression
+                      | MINUS expression'''
+        operators = {
+            'not': interpreter.OperationsNot,
+            '-': interpreter.OperationsNeg,
+        }
+
+        t[0] = ast.ExpressionCall(ast.ExpressionVariable([operators[t[1]]]), [t[2]])
+
+    def p_expression_parens(self, t):
+        'expression : LPAREN expression RPAREN'
+        t[0] = t[2]
 
     def p_expression_identifier(self, t):
         'expression : IDENTIFIER'

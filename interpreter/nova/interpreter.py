@@ -4,8 +4,21 @@ from . import ast
 OperationsAdd = '@add'
 OperationsSub = '@sub'
 OperationsMult = '@mult'
-OperationsDiv = '@div'
+OperationsFDiv = '@fdiv'
+OperationsIDiv = '@idiv'
 OperationsMod = '@mod'
+OperationsNot = '@not'
+
+OperationsAnd = '@and'
+OperationsOr = '@or'
+OperationsNeg = '@neg'
+
+OperationsEqual = '@eql'
+OperationsNotEqual = '@neq'
+OperationsLess = '@les'
+OperationsGreater = '@grt'
+OperationsLessEqual = '@lte'
+OperationsGreaterEqual = '@gte'
 
 
 class IntepreterError(Exception):
@@ -103,6 +116,8 @@ class Engine:
     def _prepare_global_scope(self):
         self._global_scope = Scope()
         self._global_scope.set(OperationsAdd, Function(lambda a, b: a + b))
+        self._global_scope.set(OperationsMult, Function(lambda a, b: a * b))
+        self._global_scope.set(OperationsSub, Function(lambda a, b: a - b))
 
 
 class Scope:

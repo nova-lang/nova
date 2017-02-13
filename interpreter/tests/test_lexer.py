@@ -1,5 +1,5 @@
 import unittest
-from nova.lexer import NovaLexer
+from . import lexer
 
 
 class TestNovaLexer(unittest.TestCase):
@@ -30,7 +30,6 @@ class TestNovaLexer(unittest.TestCase):
         self._assert_lexical_parsing_equals(source, *expected)
 
     def _assert_lexical_parsing_equals(self, source, *expected):
-        lexer = NovaLexer()
         result = [
             (token.type, token.value, token.lineno, token.lexpos)
             for token in lexer.parse(source)

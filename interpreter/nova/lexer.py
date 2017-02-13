@@ -5,15 +5,15 @@ from ply import lex
 class NovaTokensDescription:
     keywords = [
         'module', 'let', 'end', 'type', 'match', 'with', 'for', 'do', 'in', 'if', 'then', 'else',
-        'fn', 'raise', 'import', 'and', 'or', 'not', 'var',
+        'fn', 'raise', 'import', 'and', 'or', 'not', 'var', 'div', 'mod',
     ]
 
     symbols = [
         ('DOT',       '.'),
         ('PLUS',      '+'),
         ('MINUS',     '-'),
-        ('PRODUCT',   '*'),
-        ('DIVISION',  '/'),
+        ('TIMES',     '*'),
+        ('FDIV',      '/'),
         ('COLON',     ':'),
         ('SEMICOLON', ';'),
         ('COMMA',     ','),
@@ -48,7 +48,7 @@ class NovaLexer:
 
     def __init__(self, **kwargs):
         self._prepare()
-        self._lexer = lex.lex(module=self, **kwargs)
+        self._kwargs = kwargs
 
     def _prepare(self):
         tokens = ['IDENTIFIER', 'WHITESPACE', 'NEWLINE', 'INDENT', 'INTEGER', 'FLOAT', 'COMMENT',
@@ -89,8 +89,9 @@ class NovaLexer:
         t.lexer.skip(1)
 
     def parse(self, source):
-        self._lexer.input(source)
-        stream = iter(self._lexer.token, None)
+        lexer = lex.lex(module=self, **self._kwargs)
+        lexer.input(source)
+        stream = iter(lexer.token, None)
         stream = self._annotate_indentation(stream)
         return stream
 
